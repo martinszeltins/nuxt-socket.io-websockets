@@ -123,7 +123,12 @@ export const useWebsockets = () => {
         socket.value?.emit(event, ...args)
     }
 
+    const once = (event: string, handler: (...args: unknown[]) => void) => {
+        socket.value?.once(event, handler)
+    }
+
     const close = () => {
+        socket.value?.removeAllListeners()
         socket.value?.disconnect()
         socket.value = null
         isListenersRegistered.value = false
@@ -138,6 +143,7 @@ export const useWebsockets = () => {
         off,
         emit,
         close,
+        once,
         isConnected,
         isConnecting,
         error,
