@@ -38,12 +38,12 @@ export const useWebsockets = () => {
         }
     }
 
+    /**
+     * If we are not yet connected, then we create a new socket instance and connection.
+     */
     if (!socket.value) {
         isConnecting.value = true
 
-        /**
-         * If we are not yet connected, then we create a new socket instance and connection.
-         */
         socket.value = io('http://localhost:3600', {
             path: '/ws',
             transports: ['websocket', 'polling']
