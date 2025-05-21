@@ -3,7 +3,9 @@ import { io, type Socket } from 'socket.io-client'
 
 /**
  * Map used to track which listeners were registered by which component instance.
- * Allows us to auto-clean them up on unmount.
+ * Allows us to auto-clean them up on unmount. Otherwise we would have problems when
+ * a component registers some listeners and then unmounts and then mounts again. The
+ * listeners would be registered again and we would have duplicates.
  */
 const componentListeners = new WeakMap<object, Set<{ event: string, handler: (...args: unknown[]) => void }>>()
 
