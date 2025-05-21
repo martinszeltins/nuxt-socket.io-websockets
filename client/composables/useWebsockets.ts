@@ -93,7 +93,7 @@ export const useWebsockets = () => {
                     for (const { event, handler } of listeners) {
                         socket.value?.off(event, handler)
                     }
-                    
+
                     componentListeners.delete(instance)
                 }
             })
@@ -104,6 +104,19 @@ export const useWebsockets = () => {
 
     const off = (event: string, handler: (...args: unknown[]) => void) => {
         socket.value?.off(event, handler)
+
+        const instance = getCurrentInstance()
+        const listeners = instance && componentListeners.get(instance)
+
+        if (listeners) {
+            for (const listener of listeners) {
+                if (listener.event === event && listener.handler === handler) {
+                    listeners.delete(listener)
+                    break
+                }
+            }
+        }
+
     }
 
     const emit = (event: string, ...args: unknown[]) => {
