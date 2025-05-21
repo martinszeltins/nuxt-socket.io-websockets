@@ -84,13 +84,16 @@ export const useWebsockets = () => {
 
         if (!componentListeners.has(instance)) {
             componentListeners.set(instance, new Set())
+
             // Register automatic cleanup
             onUnmounted(() => {
                 const listeners = componentListeners.get(instance)
+
                 if (listeners) {
                     for (const { event, handler } of listeners) {
                         socket.value?.off(event, handler)
                     }
+                    
                     componentListeners.delete(instance)
                 }
             })
